@@ -45,7 +45,7 @@ export class EventsGateway
     @MessageBody() data: { boardData: BoardData[] },
   ) {
     await this.boardService.update(data.boardData);
-    client.broadcast.emit('update', data.boardData);
-    console.log('emitiendo', data.boardData[0].elements);
+    client.broadcast.emit('updateColumnData', data.boardData);
+    console.log('emitiendo', data.boardData);
   }
 }
