@@ -1,7 +1,7 @@
-import { BoardItem } from './boardItem';
+import { Task } from './task';
 
 export interface BoardData {
   id: string;
   title: string;
-  elements: BoardItem[];
+  elements: Task[];
 }

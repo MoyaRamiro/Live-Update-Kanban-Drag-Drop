@@ -1,4 +1,4 @@
-export interface BoardItem {
+export interface Task {
   id: string;
   name: string;
   isChecked: boolean;
