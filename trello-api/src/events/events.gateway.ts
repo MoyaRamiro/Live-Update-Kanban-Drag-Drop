@@ -10,7 +10,6 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { BoardService } from '../services/board.service';
-import { Boards } from '../schemas/board.schema';
 import { BoardData } from 'src/types/boardData';
 
 @WebSocketGateway({
