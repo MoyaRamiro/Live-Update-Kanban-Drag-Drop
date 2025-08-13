@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { EventsModule } from './events/events.module';
 import { ConfigModule } from '@nestjs/config';
+import { MongoDbModule } from './mongo-db/mongo-db.module';
 
 @Module({
   imports: [
@@ -8,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     EventsModule,
+    MongoDbModule,
   ],
 })
 export class AppModule {}

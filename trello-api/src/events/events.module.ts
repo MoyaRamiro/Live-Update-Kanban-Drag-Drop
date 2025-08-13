@@ -4,19 +4,10 @@ import { EventsGateway } from './events.gateway';
 import { Boards, BoardsSchema } from '../schemas/board.schema';
 import { BoardService } from '../services/board.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongoDbModule } from 'src/mongo-db/mongo-db.module';
 
 @Module({
-  imports: [
-    ConfigModule,
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_DB_URI'),
-      }),
-      inject: [ConfigService],
-    }),
-    MongooseModule.forFeature([{ name: Boards.name, schema: BoardsSchema }]),
-  ],
+  imports: [ConfigModule.forRoot(), MongoDbModule],
   providers: [EventsGateway, BoardService],
 })
 export class EventsModule {}
