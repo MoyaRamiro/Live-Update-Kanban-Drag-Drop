@@ -11,6 +11,8 @@ import {
 import { Server, Socket } from 'socket.io';
 import { BoardService } from '../board/service/board.service';
 import { BoardData } from 'src/types/boardData';
+import { TaskService } from '../task/service/task.service';
+import { TaskData } from 'src/types/taskData';
 
 @WebSocketGateway({
   cors: {
@@ -22,7 +24,10 @@ export class EventsGateway
 {
   @WebSocketServer() server: Server;
 
-  constructor(private readonly boardService: BoardService) {}
+  constructor(
+    private readonly boardService: BoardService,
+    private readonly taskService: TaskService,
+  ) {}
 
   async afterInit(server: Server) {
     console.log('WebSocket initialized');
@@ -46,5 +51,16 @@ export class EventsGateway
     await this.boardService.update(data.boardData);
     client.broadcast.emit('updateColumnsData', data.boardData);
     console.log('emitiendo', data.boardData);
+  }
+
+  @SubscribeMessage('tasksUpdate')
+  async handleTaskUpdate(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { taskData: TaskData[] },
+    @MessageBody() id: string,
+  ) {
+    await this.taskService.update(data.taskData, id);
+    client.broadcast.emit('updateTasksData', data.taskData);
+    console.log('emitiendo', data.taskData);
   }
 }

@@ -12,7 +12,7 @@ export function ColumnList() {
     ColumnType
   >([], { group: "column" });
 
-  const updateSocketBoard = SocketData(setColumns);
+  const { updateSocketBoard } = SocketData(setColumns);
 
   const onAddTask = (
     newName: string,

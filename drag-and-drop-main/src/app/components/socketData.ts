@@ -50,5 +50,10 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
     console.log("🔄 Emitiendo actualización de servidor:", data);
   };
 
-  return updateSocketBoard;
+  const updateSocketCards = (data: CardType[], columnId: string) => {
+    socketRef.current?.emit("cardsUpdate", { cardData: data, columnId });
+    console.log("🔄 Emitiendo actualización de servidor:", data);
+  };
+
+  return { updateSocketBoard, updateSocketCards };
 }
