@@ -24,12 +24,12 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
         setColumns(data);
       });
 
-      socketRef.current.on("updateColumnData", (data: ColumnType[]) => {
+      socketRef.current.on("updateColumnsData", (data: ColumnType[]) => {
         console.log("📨 Actualización recibida:", data);
         setColumns(data);
       });
 
-      socketRef.current.on("updateCardData", (data: CardType[]) => {
+      socketRef.current.on("updateCardsData", (data: CardType[]) => {
         console.log("📨 Actualización recibida:", data);
         //setTasks(data); de la columna correspondiente  /////////PRIMERO
       });
@@ -46,7 +46,7 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
 
   const updateSocketBoard = (data: ColumnType[]) => {
     setColumns([...data]);
-    socketRef.current?.emit("boardUpdate", { boardData: data });
+    socketRef.current?.emit("boardsUpdate", { boardData: data });
     console.log("🔄 Emitiendo actualización de servidor:", data);
   };
 

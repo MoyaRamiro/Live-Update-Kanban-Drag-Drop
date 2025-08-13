@@ -1,6 +1,5 @@
-export interface Task {
+export interface TaskData {
   id: string;
   name: string;
   isChecked: boolean;
-  boardId: string;
 }

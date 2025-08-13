@@ -38,13 +38,13 @@ export class EventsGateway
     console.log(`Client disconnected: ${client.id}`);
   }
 
-  @SubscribeMessage('boardUpdate')
+  @SubscribeMessage('boardsUpdate')
   async handleMessage(
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { boardData: BoardData[] },
   ) {
     await this.boardService.update(data.boardData);
-    client.broadcast.emit('updateColumnData', data.boardData);
+    client.broadcast.emit('updateColumnsData', data.boardData);
     console.log('emitiendo', data.boardData);
   }
 }
