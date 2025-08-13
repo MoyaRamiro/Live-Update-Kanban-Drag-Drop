@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Boards, BoardDocument } from '../schemas/board.schema';
+import { Boards, BoardDocument } from '../../board/schema/board.schema';
 import { v4 as uuidv4 } from 'uuid';
 import { BoardData } from 'src/types/boardData';
 
