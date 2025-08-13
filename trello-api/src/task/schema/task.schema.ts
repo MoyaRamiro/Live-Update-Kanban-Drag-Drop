@@ -9,7 +9,7 @@ export class Tasks {
   tasks: TaskData[];
 
   @Prop({ required: true, unique: true })
-  id: string;
+  columnId: string;
 }
 
 export const TasksSchema = SchemaFactory.createForClass(Tasks);
