@@ -56,10 +56,15 @@ export class EventsGateway
   @SubscribeMessage('tasksUpdate')
   async handleTaskUpdate(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { taskData: TaskData[] },
-    @MessageBody() id: string,
+    @MessageBody() data: { taskData: TaskData[]; boardId: string },
   ) {
-    await this.taskService.update(data.taskData, id);
+    const boards = await this.boardService.findAll();
+    const updatedBoards = boards.map((board) =>
+      board.id === data.boardId ? { ...board, elements: data.taskData } : board,
+    );
+
+    await this.boardService.update(updatedBoards);
+    await this.taskService.update(data.taskData, data.boardId);
     client.broadcast.emit('updateTasksData', data.taskData);
     console.log('emitiendo', data.taskData);
   }
