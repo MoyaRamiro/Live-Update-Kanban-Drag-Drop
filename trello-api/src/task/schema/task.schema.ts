@@ -13,3 +13,5 @@ export class Tasks {
 }
 
 export const TasksSchema = SchemaFactory.createForClass(Tasks);
+
+//@task.schema.ts @task.service.ts @board.service.ts @board.schema.ts de que forma puedo conectar el columnId de task.schema para que sea el id correspondiente a la columna que pertenece@types

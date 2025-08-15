@@ -31,7 +31,7 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
 
       socketRef.current.on("updateCardsData", (data: CardType[]) => {
         console.log("📨 Actualización recibida:", data);
-        //setTasks(data); de la columna correspondiente  /////////PRIMERO
+        //setTasks(data); de la columna correspondiente  /////////como llevo el setTasks correspondiente
       });
     }
 
@@ -50,7 +50,12 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
     console.log("🔄 Emitiendo actualización de servidor:", data);
   };
 
-  const updateSocketCards = (data: CardType[], columnId: string) => {
+  const updateSocketCards = (
+    data: CardType[],
+    columnId: string,
+    setTasks: (data: CardType[]) => void
+  ) => {
+    setTasks(data);
     socketRef.current?.emit("cardsUpdate", { cardData: data, columnId });
     console.log("🔄 Emitiendo actualización de servidor:", data);
   };
