@@ -25,12 +25,12 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
       });
 
       socketRef.current.on("updateColumnsData", (data: ColumnType[]) => {
-        console.log("📨 Actualización recibida:", data);
+        console.log("📨 Actualización columns recibida:", data);
         setColumns(data);
       });
 
-      socketRef.current.on("updateCardsData", (data: CardType[]) => {
-        console.log("📨 Actualización recibida:", data);
+      socketRef.current.on("updateTasksData", (data: CardType[]) => {
+        console.log("📨 Actualización tasks recibida:", data);
         //setTasks(data); de la columna correspondiente  /////////como llevo el setTasks correspondiente
       });
     }
@@ -47,18 +47,21 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
   const updateSocketBoard = (data: ColumnType[]) => {
     setColumns([...data]);
     socketRef.current?.emit("boardsUpdate", { boardData: data });
-    console.log("🔄 Emitiendo actualización de servidor:", data);
+    console.log("🔄 Emitiendo actualización BOARD de servidor:", data);
   };
 
-  const updateSocketCards = (
+  const updateSocketTasks = (
     data: CardType[],
     columnId: string,
     setTasks: (data: CardType[]) => void
   ) => {
+    console.log("🔄 Emitiendo actualización TASKS de servidor:", data);
     setTasks(data);
-    socketRef.current?.emit("cardsUpdate", { cardData: data, columnId });
-    console.log("🔄 Emitiendo actualización de servidor:", data);
+    socketRef.current?.emit("tasksUpdate", {
+      taskData: data,
+      boardId: columnId,
+    });
   };
 
-  return { updateSocketBoard, updateSocketCards };
+  return { updateSocketBoard, updateSocketTasks };
 }

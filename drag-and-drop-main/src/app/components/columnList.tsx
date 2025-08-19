@@ -12,7 +12,7 @@ export function ColumnList() {
     ColumnType
   >([], { group: "column" });
 
-  const { updateSocketBoard, updateSocketCards } = SocketData(setColumns);
+  const { updateSocketBoard, updateSocketTasks } = SocketData(setColumns);
 
   const onAddTask = (
     newName: string,
@@ -31,12 +31,12 @@ export function ColumnList() {
       }
       return column;
     });
-    updateSocketBoard(newColumns);
+    //updateSocketBoard(newColumns);
 
     const updatedColumn = newColumns.find((col) => col.id === columnId);
     if (updatedColumn) {
-      updateSocketCards(updatedColumn.elements, columnId, setTasks);
-      setTasks(updatedColumn.elements);
+      updateSocketTasks(updatedColumn.elements, columnId, setTasks);
+      //setTasks(updatedColumn.elements);
     }
   };
 
