@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { MongoDbModule } from './mongo-db/mongo-db.module';
 import { EventsGateway } from './events/events.gateway';
 import { BoardService } from './board/service/board.service';
-import { TaskService } from './task/service/task.service';
 
 @Module({
   imports: [
@@ -12,6 +11,6 @@ import { TaskService } from './task/service/task.service';
     }),
     MongoDbModule,
   ],
-  providers: [EventsGateway, BoardService, TaskService],
+  providers: [EventsGateway, BoardService],
 })
 export class AppModule {}
