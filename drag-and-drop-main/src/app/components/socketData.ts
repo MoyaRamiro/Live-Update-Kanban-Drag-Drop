@@ -32,6 +32,7 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
       socketRef.current.on("updateTasksData", (data: CardType[]) => {
         console.log("📨 Actualización tasks recibida:", data);
         //setTasks(data); de la columna correspondiente  /////////como llevo el setTasks correspondiente
+        //hacer un map con llaves, en la que la llave sea el id del board y el valor sea el setTasks
       });
     }
 
