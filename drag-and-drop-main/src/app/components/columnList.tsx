@@ -12,31 +12,30 @@ export function ColumnList() {
     ColumnType
   >([], { group: "column" });
 
-  const { updateSocketBoard, updateSocketTasks } = SocketData(setColumns);
+  const onColumnUpdate = (newColumns: ColumnType[]) => {
+    setColumns(newColumns);
+  };
+
+  const { updateSocketBoard, updateSocketTasks } = SocketData(onColumnUpdate);
 
   const onAddTask = (
     newName: string,
     columnId: string,
     setTasks: (data: CardType[]) => void
   ) => {
-    const newColumns = columns.map((column) => {
-      if (column.id === columnId) {
-        return {
-          ...column,
-          elements: [
-            ...column.elements,
-            { id: uuidv4(), name: newName, isChecked: false },
-          ],
-        };
-      }
-      return column;
-    });
-    //updateSocketBoard(newColumns);
+    const column = columns.find((col) => col.id === columnId);
+    if (!column) return;
 
-    const updatedColumn = newColumns.find((col) => col.id === columnId);
+    const updatedColumn = {
+      ...column,
+      elements: [
+        ...column.elements,
+        { id: uuidv4(), name: newName, isChecked: false },
+      ],
+    };
+
     if (updatedColumn) {
       updateSocketTasks(updatedColumn.elements, columnId, setTasks);
-      //setTasks(updatedColumn.elements);
     }
   };
 
