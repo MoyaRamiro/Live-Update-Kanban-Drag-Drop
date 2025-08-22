@@ -60,7 +60,10 @@ export class EventsGateway
     );
 
     await this.boardService.update(updatedBoards);
-    client.broadcast.emit('updateTasksData', data.taskData);
+    client.broadcast.emit('updateTasksData', {
+      taskData: data.taskData,
+      boardId: data.boardId,
+    });
     console.log('emitiendo tasks', data.taskData);
   }
 }

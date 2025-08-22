@@ -3,6 +3,8 @@ import { useDragAndDrop } from "@formkit/drag-and-drop/react";
 import { CardType } from "../types/cardType";
 import { Task } from "./task";
 import { TaskForm } from "./taskForm";
+import { SocketData } from "./socketData";
+import { useEffect } from "react";
 
 interface ColumnProps {
   title: string;
@@ -36,6 +38,12 @@ export function Column({
       return el.id !== "no-drag";
     },
   });
+  const { registerTasksSetter } = SocketData(() => {});
+
+  useEffect(() => {
+    const cleanup = registerTasksSetter(id, setTasks);
+    return cleanup;
+  }, [id, registerTasksSetter]);
 
   return (
     <ul

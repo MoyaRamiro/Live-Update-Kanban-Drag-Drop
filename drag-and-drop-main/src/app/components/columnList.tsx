@@ -11,12 +11,7 @@ export function ColumnList() {
     HTMLUListElement,
     ColumnType
   >([], { group: "column" });
-
-  const onColumnUpdate = (newColumns: ColumnType[]) => {
-    setColumns(newColumns);
-  };
-
-  const { updateSocketBoard, updateSocketTasks } = SocketData(onColumnUpdate);
+  const { updateSocketBoard, updateSocketTasks } = SocketData(setColumns);
 
   const onAddTask = (
     newName: string,
