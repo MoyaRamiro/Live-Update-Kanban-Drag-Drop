@@ -66,4 +66,11 @@ export class EventsGateway
     });
     console.log('emitiendo tasks', data.taskData);
   }
+
+  @SubscribeMessage('getAllColumns')
+  async getAllColumns(@ConnectedSocket() client: Socket) {
+    const columnData = await this.boardService.findAll();
+    console.log('columnData', columnData);
+    client.emit('receiveAllColumns', columnData);
+  }
 }

@@ -10,16 +10,6 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
     new Map()
   );
 
-  const registerTasksSetter = (
-    columnId: string,
-    setTasks: (data: CardType[]) => void
-  ) => {
-    tasksSetters.current.set(columnId, setTasks);
-    return () => {
-      tasksSetters.current.delete(columnId);
-    };
-  };
-
   useEffect(() => {
     if (!socketRef.current) {
       socketRef.current = io("http://localhost:3001/", {
@@ -63,6 +53,16 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
     };
   }, []);
 
+  const registerTasksSetter = (
+    columnId: string,
+    setTasks: (data: CardType[]) => void
+  ) => {
+    tasksSetters.current.set(columnId, setTasks);
+    return () => {
+      tasksSetters.current.delete(columnId);
+    };
+  };
+
   const updateSocketBoard = (data: ColumnType[]) => {
     setColumns([...data]);
     socketRef.current?.emit("boardsUpdate", { boardData: data });
@@ -82,5 +82,27 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
     });
   };
 
-  return { updateSocketBoard, updateSocketTasks, registerTasksSetter };
+  const fetchAllColumns = (): Promise<ColumnType[]> => {
+    return new Promise((resolve) => {
+      if (socketRef.current) {
+        const handler = (data: ColumnType[]) => {
+          console.log("📨 Datos recibidos:", data);
+          socketRef.current?.off("receiveAllColumns", handler);
+          resolve(data);
+        };
+        
+        socketRef.current.on("receiveAllColumns", handler);
+        socketRef.current.emit("getAllColumns");
+      } else {
+        resolve([]);
+      }
+    });
+  };
+
+  return {
+    updateSocketBoard,
+    updateSocketTasks,
+    registerTasksSetter,
+    fetchAllColumns,
+  };
 }

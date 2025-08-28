@@ -19,6 +19,7 @@ interface ColumnProps {
     newName: string,
     setTasks: (data: CardType[]) => void
   ) => void;
+  registerTasksSetter: (columnId: string, setTasks: (data: CardType[]) => void) => void;
 }
 
 export function Column({
@@ -28,6 +29,7 @@ export function Column({
   handleRemoveColumn,
   handleRemoveTask,
   handleAddTask,
+  registerTasksSetter,
 }: ColumnProps) {
   const [taskList, tasks, setTasks] = useDragAndDrop<
     HTMLUListElement,
@@ -38,7 +40,6 @@ export function Column({
       return el.id !== "no-drag";
     },
   });
-  const { registerTasksSetter } = SocketData(() => {});
 
   useEffect(() => {
     const cleanup = registerTasksSetter(id, setTasks);

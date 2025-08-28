@@ -11,14 +11,20 @@ export function ColumnList() {
     HTMLUListElement,
     ColumnType
   >([], { group: "column" });
-  const { updateSocketBoard, updateSocketTasks } = SocketData(setColumns);
+  const {
+    updateSocketBoard,
+    updateSocketTasks,
+    registerTasksSetter,
+    fetchAllColumns,
+  } = SocketData(setColumns);
 
-  const onAddTask = (
+  const onAddTask = async (
     newName: string,
     columnId: string,
     setTasks: (data: CardType[]) => void
   ) => {
-    const column = columns.find((col) => col.id === columnId);
+    const columnData = await fetchAllColumns();
+    const column = columnData.find((col) => col.id === columnId);
     if (!column) return;
 
     const updatedColumn = {
@@ -28,6 +34,8 @@ export function ColumnList() {
         { id: uuidv4(), name: newName, isChecked: false },
       ],
     };
+
+    console.log("updatedColumn", updatedColumn);
 
     if (updatedColumn) {
       updateSocketTasks(updatedColumn.elements, columnId, setTasks);
@@ -91,6 +99,7 @@ export function ColumnList() {
                 handleAddTask={(newName, setTasks) =>
                   onAddTask(newName, column.id, setTasks)
                 }
+                registerTasksSetter={registerTasksSetter}
               />
             </li>
           ))}
