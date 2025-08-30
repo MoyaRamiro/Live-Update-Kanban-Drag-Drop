@@ -66,7 +66,6 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
   const updateSocketBoard = (data: ColumnType[]) => {
     setColumns([...data]);
     socketRef.current?.emit("boardsUpdate", { boardData: data });
-    console.log("🔄 Emitiendo actualización BOARD de servidor:", data);
   };
 
   const updateSocketTasks = (
@@ -74,7 +73,6 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
     columnId: string,
     setTasks: (data: CardType[]) => void
   ) => {
-    console.log("🔄 Emitiendo actualización TASKS de servidor:", data);
     setTasks(data);
     socketRef.current?.emit("tasksUpdate", {
       taskData: data,
@@ -86,7 +84,6 @@ export function SocketData(setColumns: (data: ColumnType[]) => void) {
     return new Promise((resolve) => {
       if (socketRef.current) {
         const handler = (data: ColumnType[]) => {
-          console.log("📨 Datos recibidos:", data);
           socketRef.current?.off("receiveAllColumns", handler);
           resolve(data);
         };
