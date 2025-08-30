@@ -3,7 +3,6 @@ import { useDragAndDrop } from "@formkit/drag-and-drop/react";
 import { CardType } from "../types/cardType";
 import { Task } from "./task";
 import { TaskForm } from "./taskForm";
-import { SocketData } from "./socketData";
 import { useEffect } from "react";
 
 interface ColumnProps {
@@ -19,7 +18,14 @@ interface ColumnProps {
     newName: string,
     setTasks: (data: CardType[]) => void
   ) => void;
-  registerTasksSetter: (columnId: string, setTasks: (data: CardType[]) => void) => void;
+  registerTasksSetter: (
+    columnId: string,
+    setTasks: (data: CardType[]) => void
+  ) => void;
+  handleTaskCompletion: (
+    taskId: string,
+    setTasks: (data: CardType[]) => void
+  ) => void;
 }
 
 export function Column({
@@ -30,6 +36,7 @@ export function Column({
   handleRemoveTask,
   handleAddTask,
   registerTasksSetter,
+  handleTaskCompletion,
 }: ColumnProps) {
   const [taskList, tasks, setTasks] = useDragAndDrop<
     HTMLUListElement,
@@ -73,6 +80,7 @@ export function Column({
           key={task.id}
           task={task}
           handleRemoveTask={(taskId) => handleRemoveTask(taskId, setTasks)}
+          toggleTaskCompletion={() => handleTaskCompletion(task.id, setTasks)}
         />
       ))}
       <TaskForm

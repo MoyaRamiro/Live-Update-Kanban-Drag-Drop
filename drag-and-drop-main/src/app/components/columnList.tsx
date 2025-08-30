@@ -54,9 +54,25 @@ export function ColumnList() {
       elements: column.elements.filter((task) => task.id !== taskId),
     };
 
-    if (updatedColumn) {
-      updateSocketTasks(updatedColumn.elements, columnId, setTasks);
-    }
+    updateSocketTasks(updatedColumn.elements, columnId, setTasks);
+  };
+
+  const onToggleTaskCompletion = async (
+    taskId: string,
+    setTasks: (data: CardType[]) => void
+  ) => {
+    const columnData = await fetchAllColumns();
+    const column = columnData.find((col) =>
+      col.elements.some((task) => task.id === taskId)
+    );
+
+    if (!column) return;
+
+    const updatedTasks = column.elements.map((task) =>
+      task.id === taskId ? { ...task, isChecked: !task.isChecked } : task
+    );
+
+    updateSocketTasks(updatedTasks, column.id, setTasks);
   };
 
   const onAddColumn = (title: string) => {
@@ -94,6 +110,7 @@ export function ColumnList() {
                   onAddTask(newName, column.id, setTasks)
                 }
                 registerTasksSetter={registerTasksSetter}
+                handleTaskCompletion={onToggleTaskCompletion}
               />
             </li>
           ))}
