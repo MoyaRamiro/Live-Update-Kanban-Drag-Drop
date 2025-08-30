@@ -35,7 +35,24 @@ export function ColumnList() {
       ],
     };
 
-    console.log("updatedColumn", updatedColumn);
+    if (updatedColumn) {
+      updateSocketTasks(updatedColumn.elements, columnId, setTasks);
+    }
+  };
+
+  const onRemoveTask = async (
+    taskId: string,
+    columnId: string,
+    setTasks: (data: CardType[]) => void
+  ) => {
+    const columnData = await fetchAllColumns();
+    const column = columnData.find((col) => col.id === columnId);
+    if (!column) return;
+
+    const updatedColumn = {
+      ...column,
+      elements: column.elements.filter((task) => task.id !== taskId),
+    };
 
     if (updatedColumn) {
       updateSocketTasks(updatedColumn.elements, columnId, setTasks);
@@ -56,29 +73,6 @@ export function ColumnList() {
 
   const onRemoveColumn = (columnId: string) => {
     updateSocketBoard(columns.filter((column) => column.id !== columnId));
-  };
-
-  const onRemoveTask = (
-    taskId: string,
-    columnId: string,
-    setTasks: (data: CardType[]) => void
-  ) => {
-    const newColumns = columns.map((column) => {
-      if (column.id === columnId) {
-        return {
-          ...column,
-          elements: column.elements.filter((task) => task.id !== taskId),
-        };
-      }
-      return column;
-    });
-
-    updateSocketBoard(newColumns);
-
-    const updatedColumn = newColumns.find((col) => col.id === columnId);
-    if (updatedColumn) {
-      setTasks(updatedColumn.elements);
-    }
   };
 
   return (
